@@ -13,3 +13,4 @@ Koushik - walkthrough applications
              <password>s3cret</password>
           </server>
         </servers>
+    [tomcat 7] please ensure that tomcat picked Java Higher version else you will get magor.minor expcection [51]
