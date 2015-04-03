@@ -23,6 +23,17 @@
                 </configuration>
             </plugin>
 
+			<!-- Apache Server Configuration -->
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat6-maven-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<!-- maven/settings.xml -->
+					<server>tomcatserver</server>
+				</configuration>
+			</plugin>
+			
 			<!-- Jetty Server Configuration -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
