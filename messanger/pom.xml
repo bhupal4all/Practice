@@ -38,7 +38,7 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.10</version>
 				<configuration>
-					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<scanIntervalSeconds>5</scanIntervalSeconds>
 					<connectors>
 						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
 							<port>8080</port>
@@ -72,11 +72,11 @@
 			-->
 			<!-- artifactId>jersey-container-servlet</artifactId -->
 		</dependency>
-		<!--
-			uncomment this to get JSON support <dependency>
+		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-moxy</artifactId> </dependency>
-		-->
+			<artifactId>jersey-media-moxy</artifactId> 
+		</dependency>
+		
 	</dependencies>
 	<properties>
 		<jersey.version>2.16</jersey.version>
