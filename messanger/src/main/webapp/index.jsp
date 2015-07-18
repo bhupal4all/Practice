@@ -47,7 +47,7 @@ $(function(){
 				if (debug)
 					alert('response: '+xml);
 				
-				$("#message").text('');
+				$("#message").text('').addClass("message");;
 				$(xml).find('message').each(function(){
 					if ($(this) != '')
 						$("#message").append('['+$(this).find('id').text()+','+$(this).find('message').text()+']');
@@ -58,12 +58,18 @@ $(function(){
 		{
 			// - getJSON
 			$.getJSON(btn.attr("url"), function(result){
+				var $table = $("#messagestable");
 				$("#message").text('');
+
 				$.each(result, function(i, field){
 					$("#message").append('['+field['id'] + "-" + field['message']+']');
+					
+					$table.append('<tr><td>'+field['id']+'</td><td>'+field['message']+'</td></tr>');
 				});
 				
 				$("#message").addClass("message");
+				
+				
 			});
 		}
 	});
@@ -97,6 +103,15 @@ $(function(){
 		<button dataType="xml" url="webapi/messages/xml">Xml Message</button>
 		<button id="button4" dataType="json" url="webapi/messages/json">Json Message</button>
 		<p>Message from Ajax: <span id="message">None</span></p>
+		<br/>
+		<table id="messagestable" border="1" width="200">
+			<caption>List of Messages</caption>
+			<tr>
+				<th>Id</th>
+				<th>Message</th>
+			</tr>
+		</table>
+		
 	</div>
 	<hr/>
     <p>Visit <a href="http://jersey.java.net">Project Jersey website</a>
