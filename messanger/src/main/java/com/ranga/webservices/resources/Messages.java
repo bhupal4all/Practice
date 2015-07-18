@@ -1,13 +1,14 @@
 package com.ranga.webservices.resources;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import java.util.List;
-import java.util.ArrayList;
 
 import com.ranga.webservices.resources.data.Message;
 
@@ -42,14 +43,17 @@ public class Messages {
 	@Path("/json")
 	@Produces(MediaType.APPLICATION_JSON )
 	public List<Message> getMessagesJson() {
+		System.out.println(list);
 		return list;
 	}
 
 	@POST
 	@Path("/json/add")
-	public boolean addMessageJson(Message message) {
-		list.add(message);
-		return true;
+	public Message addMessageJson(@FormParam("id") int id, @FormParam("message") String message) {
+		Message messageObj = new Message(id,message);		
+		list.add(messageObj);
+		System.out.println(list);
+		return messageObj;
 	}
 
 }

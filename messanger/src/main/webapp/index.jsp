@@ -1,12 +1,12 @@
 <html>
 <head>
-<script
-	src="${pageContext.request.contextPath}/js/jquery.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 
 <script>
 $(function(){
-	$("button").click(function(){
-		var debug = $("#debug:checked").val() || false;
+	var debug = $("#debug:checked").val() || false;
+	
+	$("#parea button").click(function(){
 
 		var btn = $( this );
 
@@ -58,63 +58,119 @@ $(function(){
 		{
 			// - getJSON
 			$.getJSON(btn.attr("url"), function(result){
-				var $table = $("#messagestable");
 				$("#message").text('');
 
 				$.each(result, function(i, field){
 					$("#message").append('['+field['id'] + "-" + field['message']+']');
-					
-					$table.append('<tr><td>'+field['id']+'</td><td>'+field['message']+'</td></tr>');
 				});
 				
-				$("#message").addClass("message");
-				
-				
+				$("#message").addClass("message");	
 			});
 		}
 	});
 });
 </script>
+
+<script>
+$(function(){
+	$("#add").click(function(){
+		var addid = $("#addid").val()||'-1';
+		var addmsg = $("#addmessage").val()||'NULL';
+
+		if(debug)
+			alert('object to be added = ['+addid+'/'+message+']');
+		
+		var $btn = $("#messagestable button");
+		$.ajax({
+			type: 'POST',
+			url: $btn.attr("url"),
+			data: {
+				id: addid,
+				message: addmsg
+			},
+			error: function(){
+				alert('error');
+			},
+			success: function(){
+				if(debug)
+					alert('success');
+				
+				$("#addid").val('');
+				$("#addmessage").val('');
+				$("#messagestable tbody").append('<tr><td>'+addid+'</td><td>'+addmsg+'</td></tr>');
+			}
+		});
+	});
+
+	$("#get").click(function(){
+		var btn = $("#get");
+
+		alert(btn.attr("url"));
+		$.getJSON(btn.attr("url"), function(result){
+			$.each(result, function(i, field){
+				$("#messagestable tbody").append('<tr><td>'+field['id']+'</td><td>'+field['message']+'</td></tr>');
+			});
+		});
+	});
 	
+});
+</script>
+
 <style>
-  div {
+div {
 	width: 25%;
 	text-align: center;
 	font-size: 14px;
 	border: 1px solid black;
-  }
-  
-  .message {
-	  color: green;
-  }
-</style>	
+}
+
+.message {
+	color: green;
+}
+</style>
 </head>
 
 <body>
-    <h2>Jersey RESTful Web Application!</h2>
-    <p><a href="webapi/myresource">Jersey resource</a>
-	
-	<div>
-		<b>Practice Area<b>
-		<hr/>
-		<input id="debug" type="checkbox" value="true">Debug</input>
-		<button url="webapi/myresource">myresource</button>
-		<button url="webapi/messages">messages</button>
-		<button dataType="xml" url="webapi/messages/xml">Xml Message</button>
-		<button id="button4" dataType="json" url="webapi/messages/json">Json Message</button>
-		<p>Message from Ajax: <span id="message">None</span></p>
-		<br/>
-		<table id="messagestable" border="1" width="200">
-			<caption>List of Messages</caption>
-			<tr>
-				<th>Id</th>
-				<th>Message</th>
-			</tr>
-		</table>
-		
-	</div>
-	<hr/>
-    <p>Visit <a href="http://jersey.java.net">Project Jersey website</a>
-    for more information on Jersey!
+<h2>Jersey RESTful Web Application!</h2>
+<p><a href="webapi/myresource">Jersey resource</a>
+
+<div id="parea"><b>Practice Area<b>
+<hr />
+<input id="debug" type="checkbox" value="true">Debug</input>
+<button url="webapi/myresource">myresource</button>
+<button url="webapi/messages">messages</button>
+<button dataType="xml" url="webapi/messages/xml">Xml Message</button>
+<button id="button4" dataType="json" url="webapi/messages/json">Json
+Message</button>
+<p>Message from Ajax: <span id="message">None</span></p>
+<br /></div>
+
+<table id="messagestable" border="1" width="200">
+	<caption>List of Messages</caption>
+	<tbody>
+		<tr>
+			<th>Id</th>
+			<th>Message</th>
+		</tr>
+	</tbody>
+
+	<tfoot>
+		<tr>
+			<td><input id="addid" type="text" /></td>
+			<td><input id="addmessage" type="text" /></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+			<button id="add" dataType="json" url="webapi/messages/json/add">Add</button>
+			<button id="get" dataType="json" url="webapi/messages/json">Get</button>
+			</td>
+		</tr>
+	</tfoot>
+</table>
+
+
+<hr />
+<p>Visit <a href="http://jersey.java.net">Project Jersey website</a>
+for more information on Jersey!
 </body>
 </html>
