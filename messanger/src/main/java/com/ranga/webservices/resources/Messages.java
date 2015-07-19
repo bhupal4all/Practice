@@ -3,7 +3,7 @@ package com.ranga.webservices.resources;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.FormParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,9 +14,9 @@ import com.ranga.webservices.resources.data.Message;
 
 @Path("/messages")
 public class Messages {
-	List<Message> list = new ArrayList<Message>();
+	static List<Message> list = new ArrayList<Message>();
 
-	{
+	static{
 		Message one = new Message(1,"One");
 		Message two = new Message(2,"Two");
 		Message thr = new Message(3,"Three");
@@ -49,8 +49,9 @@ public class Messages {
 
 	@POST
 	@Path("/json/add")
-	public Message addMessageJson(@FormParam("id") int id, @FormParam("message") String message) {
-		Message messageObj = new Message(id,message);		
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Message addMessageJson(Message messageObj) {
 		list.add(messageObj);
 		System.out.println(list);
 		return messageObj;

@@ -56,9 +56,11 @@ $(function(){
 		}
 		else
 		{
+			$("#message").text('... Loading ...').removeClass("message").css("background","none");
+
 			// - getJSON
 			$.getJSON(btn.attr("url"), function(result){
-				$("#message").text('');
+				$("#message").text(' ');
 
 				$.each(result, function(i, field){
 					$("#message").append('['+field['id'] + "-" + field['message']+']');
@@ -77,17 +79,17 @@ $(function(){
 		var addid = $("#addid").val()||'-1';
 		var addmsg = $("#addmessage").val()||'NULL';
 
-		if(debug)
-			alert('object to be added = ['+addid+'/'+message+']');
+		var jsonData = "{\"id\": \""+addid+"\", \"message\": \""+addmsg+"\"}";
+		
+		alert(jsonData);
 		
 		var $btn = $("#messagestable button");
 		$.ajax({
 			type: 'POST',
 			url: $btn.attr("url"),
-			data: {
-				id: addid,
-				message: addmsg
-			},
+			dataType: 'json',
+			contentType: 'application/json',
+			data: jsonData,
 			error: function(){
 				alert('error');
 			},
