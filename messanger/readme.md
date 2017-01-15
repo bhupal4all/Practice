@@ -1,21 +1,5 @@
 # New Resource
 Lets learn to create a new REST Resource
-* All paramters are **case sensitive**
-
-## Resource Data Object 
-* Create a POJO and annotate with `@XmlRootElement`.  Whenever resource method returns this object and as per `Produces` and annotation arguments, either XML or JSON would be created.
-* Must be implemented **public no argument constuctor** else conversion would fail
-
-```java
-@XmlRootElement
-public class Profile {
-	public Profile() {
-		super();
-	}
-	
-	...
-}
-```
 
 ## URL Path Creation
 Create a class and annotate with `@Path('<path>')`
@@ -27,8 +11,10 @@ public class ProfileResource {
 }
 ```
 
+## Parameters
+* All paramters are **case sensitive**
 
-## PathParam
+### 1 PathParam
 * this would be used to read url path parameters. Example. in case of 'webapi\profiles\1'.  Here 1 is path param and would be used to get profile which matches to id 1.
 * `@Path` value needs to be set as `@Path('{profileId}')` where 'profileId' would be our path param place holder and would be received at method arguments by using `@PathParam('profileId') <data type> <variable>`
   * we need to use same for `PathParam` which is used at `@Path`
@@ -40,7 +26,7 @@ public Profile getProfile(@PathParam("profileId") String profileId) {
 }
 ```
   
-## QueryParam
+### 2 QueryParam
 * Query Parameters are **case sensitive**
 * this would be used to read url query parameters.  Example. in case of 'webapi\profiles?filterByUsername=bhupal', this would return all profiles which are matched to bhupal
 * Query Parameters are sepearted by `&` and these sepearted from url by using `?`
@@ -56,7 +42,7 @@ public List<Profile> getProfiles(@QueryParam("byUsername") String byUsername) {
 http://localhost:8080/messanger/webapi/profile?byUsername=all
 ```
 
-## MatrixParam
+### 3 MatrixParam
 * Matrix Parameters are different than Query Parameters
 * Matrix Parameters are sepearted by semicolon `;`
 * `@MatrixParam("param1")String parm1` would be used to read `param1`
@@ -77,7 +63,7 @@ public List<Profile> getProfiles2(
 http://localhost:8080/messanger/webapi/profile/params;param1=test;param1=test2
 ```
 
-## HeaderParam
+### 4 HeaderParam
 * Header Parameters are not passed as header content instead of url
 * `@HeaderParam("headerParam1")String headerParam1` would be used to read `headerParam1`
 
@@ -93,7 +79,7 @@ public List<Profile> getProfiles2(
 }
 ```
 
-## CookieParam
+### 5 CookieParam
 * Cookie Parameters are used to read cookies which are set by server
 * `@CookieParam("headerParam1")String cookieName` would be used to read `cookieName`
 
@@ -107,6 +93,28 @@ public List<Profile> getProfiles2(
 	...
 }
 ```
+
+### Context Parameters
+* If we have many header parameters or cookies, need to read all of those using many HeaderParam and CookieParam
+* instead we can read all of those using `Context` parameter
+* `@Context UriInfo uriInfo` or `@Context httpHeaders httpHeaders`
+
+## Resource Data Object 
+* Create a POJO and annotate with `@XmlRootElement`.  Whenever resource method returns this object and as per `Produces` and annotation arguments, either XML or JSON would be created.
+* Must be implemented **public no argument constuctor** else conversion would fail
+
+```java
+@XmlRootElement
+public class Profile {
+	public Profile() {
+		super();
+	}
+	
+	...
+}
+```
+
+## Resource Creation
 
 ### Http Get Implementation - Get Data
 * Http Request should be having method type as GET
