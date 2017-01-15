@@ -263,6 +263,30 @@ public class MessagesResource {
 }
 ```
 
+## Reponse Status 
+Along with updated entity/object, we could send Statuses.
+Example. sending Response while posting profile
+
+```java
+@POST
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public Response addProfile(Profile profileObj, @Context UriInfo uriInfo)
+		throws URISyntaxException {
+	Profile profile = DataService.getInstance().addProfile(profileObj);
+
+	ResponseBuilder reponse = null;
+	if (profile != null) {
+		URI uri = uriInfo.getAbsolutePathBuilder()
+				.path(String.valueOf(profile.getId())).build();
+		reponse = Response.created(uri).entity(profile);
+	} else
+		reponse = Response.status(Status.BAD_REQUEST);
+
+	return reponse.build();
+}
+```
+
 
 ## References
 * [Youtube Videos] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)
