@@ -19,7 +19,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.Response.Status;
 
 import com.ranga.webservices.DataService;
 import com.ranga.webservices.resources.data.Profile;
@@ -72,9 +75,17 @@ public class ProfileResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Profile addProfile(Profile profileObj) {
+	public Response addProfile(Profile profileObj) {
 		Profile profile = DataService.getInstance().addProfile(profileObj);
-		return profile;
+		
+		ResponseBuilder reponse = null;
+		if (profile != null) {
+			reponse = Response.status(Status.CREATED).entity(profile);
+		}
+		else
+			reponse = Response.status(Status.BAD_REQUEST);
+		
+		return reponse.build();
 	}
 
 	@PUT
