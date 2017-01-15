@@ -3,6 +3,7 @@ package com.ranga.webservices.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.DELETE;
@@ -15,10 +16,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 import com.ranga.webservices.DataService;
 import com.ranga.webservices.resources.data.Profile;
+import com.ranga.webservices.resources.filterbean.DateFilter;
 
 @Path("/profile")
 public class ProfileResource {
@@ -87,5 +92,25 @@ public class ProfileResource {
 		Profile profile = DataService.getInstance()
 				.deleteProfileById(profileId);
 		return profile;
+	}
+
+	@GET
+	@Path("/context")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String logContext(@Context UriInfo uriInfo,
+			@Context HttpHeaders httpHeaders) {
+		System.out.println(uriInfo.getBaseUri());
+		System.out.println(httpHeaders.getCookies());
+
+		return "check logs";
+	}
+
+	@GET
+	@Path("/filter")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String logFilter(@BeanParam DateFilter datefilter) {
+		System.out.println(datefilter);
+
+		return "check logs";
 	}
 }

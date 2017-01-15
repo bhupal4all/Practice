@@ -11,6 +11,8 @@ public class ProfileResource {
 }
 ```
 
+=============
+
 ## Parameters
 * All paramters are **case sensitive**
 
@@ -94,10 +96,56 @@ public List<Profile> getProfiles2(
 }
 ```
 
-### Context Parameters
+### 5 Context Parameters
 * If we have many header parameters or cookies, need to read all of those using many HeaderParam and CookieParam
 * instead we can read all of those using `Context` parameter
 * `@Context UriInfo uriInfo` or `@Context httpHeaders httpHeaders`
+
+```java
+@GET
+@Path("/context")
+@Produces(MediaType.TEXT_PLAIN)
+public String logContext(
+	@Context UriInfo uriInfo,
+	@Context HttpHeaders httpHeaders) 
+{
+	...
+}
+```
+
+### 6 Bean Parameters
+* if we have multiple query parameters, for example year, month and day.  then we can use bean parameters.
+* Create a POJO with Query Parameters and use `BeanParam <POJO> <variable>`
+
+```url
+http://localhost:8080/messanger/webapi/profile/filter?day=15&month=1&year=2017
+```
+
+```java
+@GET
+@Path("/filter")
+@Produces(MediaType.TEXT_PLAIN)
+public String logFilter(@BeanParam DateFilter datefilter) {
+}
+```
+
+```java
+public class DateFilter {
+	@QueryParam("year")
+	int year;
+
+	@QueryParam("month")
+	int month;
+	
+	@QueryParam("day")
+	int day;
+
+	// setters & getters
+}
+```
+
+
+=============
 
 ## Resource Data Object 
 * Create a POJO and annotate with `@XmlRootElement`.  Whenever resource method returns this object and as per `Produces` and annotation arguments, either XML or JSON would be created.
