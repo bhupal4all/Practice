@@ -433,6 +433,40 @@ Here is the sub resource url creation
 	...
 ```
 
+## Content Nagotiation
+* In our case we are getting only Json as we implem for Json
+* What if we need XML format, then we would have implemented a new method to return XML at `@Produces`
+  * Instead we can add another format like `@Produces(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })`
+  * This would support both Json and XML
+  * How does Rest Architecture identify which format that client requested?
+    * Requested format would be part of Request of Header at `Accept`
+	* **Rest Service automatically check `Accept` header parameter** and generates the request object
+  * No need of method body change
+
+* We can send the request in the form of Json using `@Consumes` in case of POST, PUT and other
+* Can we request in different formates?
+  * Yes, by defining two differnt types like `@Consumes(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })`
+  * How does Rest Architecture identify which format that client sent over request?
+    * Requested format would be part of Request of Header at `Content-Type`
+    * **Rest Service automatically check `Content-Type` header parameter** and processes the request object
+  * No need of method body change
+
+| Header Parameter | Annotation | Action |
+| --------------- :| --------- :| ----- :|
+| Accept           | Produces   | Generates |
+| Content-Type     | Consumes   | Processes |
+
+```java
+@Path("/profile")
+public class ProfileResource {
+	@POST
+	@Consumes(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Response addProfile(Profile profileObj) {
+		...
+	}
+}
+```
 
 ## References
 * [Youtube Videos] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)

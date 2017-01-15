@@ -69,7 +69,7 @@ public class ProfileResource {
 	}
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	@Path("/{profileId}")
 	public Profile getProfile(@PathParam("profileId") String profileId, @Context UriInfo uriInfo) {
 		Profile profile = DataService.getInstance().getProfileById(profileId);
@@ -85,8 +85,8 @@ public class ProfileResource {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Response addProfile(Profile profileObj, @Context UriInfo uriInfo)
 			throws URISyntaxException {
 		Profile profile = DataService.getInstance().addProfile(profileObj);
