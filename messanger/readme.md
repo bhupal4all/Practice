@@ -296,6 +296,15 @@ public Response addProfile(Profile profileObj, @Context UriInfo uriInfo)
 * Whenever data is not found, below Exception object would be thrown as per service
 
 ```java
+public class DataService {
+	public Profile getProfileById(String id) {
+		...
+		
+		throw new NoDataFoundException("No Data Found for id '" + id + "'");
+	}
+}
+```
+```java
 public class NoDataFoundException extends RuntimeException {
 	public NoDataFoundException(String message) {
 		super(message);
@@ -352,6 +361,25 @@ public class DoDataFoundExceptionMapper implements javax.ws.rs.ext.ExceptionMapp
 	}
 }
 ```
+
+## Is ther any other way to handle exceptions?
+* Yes, i.e., `javax.ws.rs.WebApplicationException`
+* Whenever we raise `WebApplicationException` instead of `RuntimeException`
+* `WebApplicationException` would take care of everything which avoid `ExceptionMapper` 
+* Unlike `ExceptionMapper`, we create `Response` object at service and passed to `WebApplicationException` constructor as an argument
+```java
+public class DataService {
+	public Profile getProfileById(String id) {
+		...
+		
+		ErrorMessage message = new ErrorMessage(404, "No Data Found for id '" + id + "'", "http://com.ranga.webservices/");
+		Response response = Response.status(Status.NOT_FOUND).entity(message) .build();
+		throw new WebApplicationException(response);	
+	}
+}
+```
+
+
 
 ## References
 * [Youtube Videos] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)

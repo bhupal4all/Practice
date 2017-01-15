@@ -3,8 +3,13 @@ package com.ranga.webservices;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import com.ranga.webservices.resources.data.Profile;
 import com.ranga.webservices.resources.exception.NoDataFoundException;
+import com.ranga.webservices.resources.exception.data.ErrorMessage;
 
 public class DataService {
 	static List<Profile> pList = new ArrayList<Profile>();
@@ -36,7 +41,12 @@ public class DataService {
 			}
 		}
 
-		throw new NoDataFoundException("No Data Found for id '" + id + "'");
+		ErrorMessage message = new ErrorMessage(404, "No Data Found for id '"
+				+ id + "'", "http://com.ranga.webservices/");
+		Response response = Response.status(Status.NOT_FOUND).entity(message)
+				.build();
+		throw new WebApplicationException(response);
+		// throw new NoDataFoundException("No Data Found for id '" + id + "'");
 	}
 
 	public Profile addProfile(Profile pprofileObj) {
