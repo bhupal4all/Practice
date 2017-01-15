@@ -452,7 +452,7 @@ Here is the sub resource url creation
   * No need of method body change
 
 | Header Parameter | Annotation | Action |
-| --------------- :| --------- :| ----- :|
+| ---------------  |:----------:| ------:|
 | Accept           | Produces   | Generates |
 | Content-Type     | Consumes   | Processes |
 
