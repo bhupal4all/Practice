@@ -27,6 +27,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import com.ranga.webservices.DataService;
+import com.ranga.webservices.resources.data.Link;
 import com.ranga.webservices.resources.data.Profile;
 import com.ranga.webservices.resources.filterbean.DateFilter;
 
@@ -70,8 +71,17 @@ public class ProfileResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{profileId}")
-	public Profile getProfile(@PathParam("profileId") String profileId) {
-		return DataService.getInstance().getProfileById(profileId);
+	public Profile getProfile(@PathParam("profileId") String profileId, @Context UriInfo uriInfo) {
+		Profile profile = DataService.getInstance().getProfileById(profileId);
+		
+		String selfUri = uriInfo.getBaseUriBuilder().path(ProfileResource.class).path(String.valueOf(profile.getId())).build().toString();
+		String messageUri =  uriInfo.getBaseUriBuilder().path(ProfileResource.class).path(ProfileResource.class, "getMessages").resolveTemplate("profileId", profileId).build().toString();
+		System.out.println(messageUri);
+		profile.getLinks().clear();
+		profile.getLinks().add(new Link(selfUri, "self"));
+		profile.getLinks().add(new Link(messageUri, "messages"));
+		
+		return profile;
 	}
 
 	@POST
@@ -131,7 +141,6 @@ public class ProfileResource {
 
 	@Path("/{profileId}/messages")
 	public MessagesResource getMessages(@PathParam("profileId") String profileId) {
-		System.out.println("profile resource + id = " + profileId);
 		return new MessagesResource();
 	}
 }

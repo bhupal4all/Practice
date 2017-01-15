@@ -1,5 +1,8 @@
 package com.ranga.webservices.resources.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -7,6 +10,7 @@ public class Profile {
 	int id = -1;
 	String username;
 	String fullName;
+	List<Link> links = new ArrayList<Link>();
 
 	public int getId() {
 		return id;
@@ -32,6 +36,14 @@ public class Profile {
 		this.fullName = fullName;
 	}
 
+	public List<Link> getLinks() {
+		return links;
+	}
+
+	public void setLinks(List<Link> links) {
+		this.links = links;
+	}
+
 	public Profile() {
 		super();
 	}
@@ -46,7 +58,7 @@ public class Profile {
 	@Override
 	public String toString() {
 		return "Profile [id=" + id + ", username=" + username + ", fullName="
-				+ fullName + "]";
+				+ fullName + ", links=" + links + "]";
 	}
 
 }

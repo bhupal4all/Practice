@@ -379,6 +379,59 @@ public class DataService {
 }
 ```
 
+## HATEOAS
+
+### Implementation of Links
+* Create an POJO for holding link and relation
+* Add links array property to Resource Data
+* Before returning the resource data and links
+* We can add other relations for sub resource as well
+
+#### Adding a Resource
+```java
+@Path("/profile")
+public class ProfileResource {
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{profileId}")
+	public Profile getProfile(@PathParam("profileId") String profileId, @Context UriInfo uriInfo) {
+		...		
+		String selfUri = uriInfo.getBaseUriBuilder()	// http://localhost:8080/messanger/webapi
+			.path(ProfileResource.class)				// /profile
+			.path(String.valueOf(profile.getId()))		// /1
+			.build()
+			.toString();
+		profile.getLinks().add(new Link(selfUri, "self"));
+		
+		return profile; 
+	}
+	...
+}
+```
+#### Adding Sub Resource
+* this is not same as Resource as Sub Resource would have `@Path("/")` which would not work for creating link
+* How do we solve this?
+  * By using sub resource method which helped to call Sub Resource like `path(<Resource>.class, "<subResourceMethodName>")`
+  * Does this solve our problem?
+    * If you think Yes, then you are wrong
+	* Why?  subResourceMethod has place holder for resource id.
+	* we would resolve place holder problem with the help of `resolve("<place hodler>", "<value>")` method
+	
+Here is the sub resource url creation
+```java
+	...
+	public Profile getProfile(@PathParam("profileId") String profileId, @Context UriInfo uriInfo) {
+		...
+		String messageUri =  uriInfo.getBaseUriBuilder()		// http://localhost:8080/messanger/webapi
+			.path(ProfileResource.class)						// /profile
+			.path(ProfileResource.class, "getMessages")			// /{profileId}/messages
+			.resolveTemplate("profileId", profileId)			// profileId ==> 1
+			.build().toString();
+		profile.getLinks().add(new Link(messageUri, "messages"));
+		...
+	}
+	...
+```
 
 
 ## References
