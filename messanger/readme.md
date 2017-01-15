@@ -287,6 +287,71 @@ public Response addProfile(Profile profileObj, @Context UriInfo uriInfo)
 }
 ```
 
+## Error Message
+* How do we need to create and handle custom exceptions?
+  * Create an exception class by extending RuntimeException
+  * Create a handler to handle the message, else we would be getting 'Internal Server Error'
+
+### Custom Exception - No Data Found Exception
+* Whenever data is not found, below Exception object would be thrown as per service
+
+```java
+public class NoDataFoundException extends RuntimeException {
+	public NoDataFoundException(String message) {
+		super(message);
+	}
+}
+```
+
+### Exception Handler
+If we didnt handle any Exception, then we would be 'Internal Server Error'
+* Create a new class by implementing `ExceptionMapper` and implement `toResponse` method
+* Unless we annotate the class with `@Provider`, this mapper would not get invoked
+
+```java
+@Provider	
+public class DoDataFoundExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<NoDataFoundException> {
+	@Override
+	public Response toResponse(NoDataFoundException excp) {
+		return Response.status(Status.NOT_FOUND).build();
+	}
+}
+```
+
+* This would send only error status that not found, but we still default web server error page. How to handle this?
+
+#### Create a POJO to hold Error Message
+```java
+public class ErrorMessage {
+	int errorCode;
+	String errorMessage;
+	String documentation;
+
+	public ErrorMessage() {
+	}
+
+	public ErrorMessage(int errorCode, String errorMessage, String documentation) {
+		super();
+		this.errorCode = errorCode;
+		this.errorMessage = errorMessage;
+		this.documentation = documentation;
+	}
+}
+```
+
+#### Handle the exception
+* while handling the exception, create error message and add to Reponse
+
+```java
+@Provider	
+public class DoDataFoundExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<NoDataFoundException> {
+	@Override
+	public Response toResponse(NoDataFoundException excp) {
+		ErrorMessage message = new ErrorMessage(404, excp.getMessage(), "http://com.ranga.webservices/");
+		return Response.status(Status.NOT_FOUND).entity(message).build();
+	}
+}
+```
 
 ## References
 * [Youtube Videos] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ranga.webservices.resources.data.Profile;
+import com.ranga.webservices.resources.exception.NoDataFoundException;
 
 public class DataService {
 	static List<Profile> pList = new ArrayList<Profile>();
@@ -35,35 +36,37 @@ public class DataService {
 			}
 		}
 
-		return null;
+		throw new NoDataFoundException("No Data Found for id '" + id + "'");
 	}
-	
+
 	public Profile addProfile(Profile pprofileObj) {
 		List<Profile> list = getProfiles();
 		if (pprofileObj.getId() == -1 || pprofileObj.getId() == 0) {
 			int id = list.size() + 1;
 			pprofileObj.setId(id);
 		}
-		
+
 		list.add(pprofileObj);
-		
+
 		return pprofileObj;
 	}
 
 	public Profile updateProfile(Profile profileObj) {
 		Profile lprofile = getProfileById(String.valueOf(profileObj.getId()));
-		
-		if (profileObj.getFullName() != null && !profileObj.getFullName().isEmpty()) {
+
+		if (profileObj.getFullName() != null
+				&& !profileObj.getFullName().isEmpty()) {
 			lprofile.setFullName(profileObj.getFullName());
 		}
-		
-		if (profileObj.getUsername() != null && !profileObj.getUsername().isEmpty()) {
+
+		if (profileObj.getUsername() != null
+				&& !profileObj.getUsername().isEmpty()) {
 			lprofile.setUsername(profileObj.getUsername());
 		}
-		
+
 		return profileObj;
 	}
-	
+
 	public Profile deleteProfileById(String id) {
 		List<Profile> list = getProfiles();
 		Profile profile = null;
@@ -77,5 +80,4 @@ public class DataService {
 		return profile;
 	}
 
-	
 }
