@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.MatrixParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -29,13 +32,29 @@ public class ProfileResource {
 			pList = DataService.getInstance().getProfiles();
 		} else {
 			List<Profile> list = DataService.getInstance().getProfiles();
-			for (int i=0;i<list.size();i++) {
+			for (int i = 0; i < list.size(); i++) {
 				if (list.get(i).getUsername().contains(byUsername)) {
 					pList.add(list.get(i));
 				}
 			}
 		}
 		return pList;
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/params")
+	public List<Profile> getProfiles2(@MatrixParam("param1") String parm1,
+			@MatrixParam("param2") String parm2,
+			@HeaderParam("Content-Type") String cntentType,
+			@CookieParam("JSESSIONID") String jession) {
+
+		System.out.println("param1 = " + parm1);
+		System.out.println("param2 = " + parm2);
+		System.out.println("Content-Type = " + cntentType);
+		System.out.println("Jession Id = " + jession);
+
+		return DataService.getInstance().getProfiles();
 	}
 
 	@GET

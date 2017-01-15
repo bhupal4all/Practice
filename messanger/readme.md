@@ -1,6 +1,6 @@
 # New Resource
 Lets learn to create a new REST Resource
-
+* All paramters are **case sensitive**
 
 ## Resource Data Object 
 * Create a POJO and annotate with `@XmlRootElement`.  Whenever resource method returns this object and as per `Produces` and annotation arguments, either XML or JSON would be created.
@@ -43,10 +43,67 @@ public Profile getProfile(@PathParam("profileId") String profileId) {
 ## QueryParam
 * Query Parameters are **case sensitive**
 * this would be used to read url query parameters.  Example. in case of 'webapi\profiles?filterByUsername=bhupal', this would return all profiles which are matched to bhupal
+* Query Parameters are sepearted by `&` and these sepearted from url by using `?`
 * `@QueryParam("byUsername") String byUsername` would be used to read `byUsername` query parameter 
 
 ```java
 public List<Profile> getProfiles(@QueryParam("byUsername") String byUsername) {
+	...
+}
+```
+
+```url
+http://localhost:8080/messanger/webapi/profile?byUsername=all
+```
+
+## MatrixParam
+* Matrix Parameters are different than Query Parameters
+* Matrix Parameters are sepearted by semicolon `;`
+* `@MatrixParam("param1")String parm1` would be used to read `param1`
+
+```java
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+@Path("/params")
+public List<Profile> getProfiles2(
+	@MatrixParam("param1")String parm1,
+	@MatrixParam("param2")String parm2) 
+{
+	...
+}
+```
+
+```url
+http://localhost:8080/messanger/webapi/profile/params;param1=test;param1=test2
+```
+
+## HeaderParam
+* Header Parameters are not passed as header content instead of url
+* `@HeaderParam("headerParam1")String headerParam1` would be used to read `headerParam1`
+
+```java
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+@Path("/params")
+public List<Profile> getProfiles2(
+	@HeaderParam("param1")String parm1,
+	@HeaderParam("param2")String parm2) 
+{
+	...
+}
+```
+
+## CookieParam
+* Cookie Parameters are used to read cookies which are set by server
+* `@CookieParam("headerParam1")String cookieName` would be used to read `cookieName`
+
+```java
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+@Path("/params")
+public List<Profile> getProfiles2(
+	@CookieParam("JSESSIONID")String jession) 
+{
 	...
 }
 ```
@@ -67,6 +124,8 @@ public Profile getProfile(@PathParam("profileId") String profileId) {
 	...
 }
 ```
+
+
 
 ### Http Post Implementation - Add New Data
 * Http Request should be having method type as POST
