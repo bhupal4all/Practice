@@ -5,8 +5,9 @@ Lets learn to create a new REST Resource
 Create a class and annotate with `@Path('<path>')`
 
 ### Http Get Implementation
+* Http Request should be having method type as GET
 * this would be used to get information from server either in the form of xml or json as per the request
-* Resource method would be annotated with `@GET` and use `@Produces(MediaType.XXXXXXXXXX)` to return either xml or json
+* Resource method would be annotated with `@GET` or `@GET("<path>")` and use `@Produces(MediaType.XXXXXXXXXX)` to return either xml or json
   * MediaType.APPLICATION_JSON
   * MediaType.APPLICATION_XML
   * MediaType.TEXT_PLAIN
@@ -17,10 +18,13 @@ Create a class and annotate with `@Path('<path>')`
   * we need to use same for `PathParam` which is used at `@Path`
 
 ### Http Post Implementation
+* Http Request should be having method type as POST
+* this would be used to add the data
+* Resource method would be annotated with `@POST` or `@POST("<path>")` and would be received as simple text at method arguments
+  * to receive in the form of object, use `@Consumes(MediaType.XXXXXXXXXX)` to consume the data and for method arguments use the object which is required (which is resource data object)
 
 
-
-## Json 
+## Resource Data Object 
 * Create a POJO and annotate with `@XmlRootElement`.  Whenever resource method returns this object and as per `Produces` and annotation arguments, either XML or JSON would be created.
 * Must be implemented *public no argument constuctor* else conversion would fail
 
