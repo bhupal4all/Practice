@@ -1,5 +1,7 @@
 package com.ranga.webservices.resources;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,8 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import com.ranga.webservices.DataService;
 import com.ranga.webservices.resources.data.Profile;
@@ -75,16 +77,18 @@ public class ProfileResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addProfile(Profile profileObj) {
+	public Response addProfile(Profile profileObj, @Context UriInfo uriInfo)
+			throws URISyntaxException {
 		Profile profile = DataService.getInstance().addProfile(profileObj);
-		
+
 		ResponseBuilder reponse = null;
 		if (profile != null) {
-			reponse = Response.status(Status.CREATED).entity(profile);
-		}
-		else
+			URI uri = uriInfo.getAbsolutePathBuilder()
+					.path(String.valueOf(profile.getId())).build();
+			reponse = Response.created(uri).entity(profile);
+		} else
 			reponse = Response.status(Status.BAD_REQUEST);
-		
+
 		return reponse.build();
 	}
 
