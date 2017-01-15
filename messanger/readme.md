@@ -1,13 +1,55 @@
 # New Resource
 Lets learn to create a new REST Resource
 
+
+## Resource Data Object 
+* Create a POJO and annotate with `@XmlRootElement`.  Whenever resource method returns this object and as per `Produces` and annotation arguments, either XML or JSON would be created.
+* Must be implemented **public no argument constuctor** else conversion would fail
+
+```java
+@XmlRootElement
+public class Profile {
+	public Profile() {
+		super();
+	}
+	
+	...
+}
+```
+
 ## URL Path Creation
 Create a class and annotate with `@Path('<path>')`
+
+```java
+@Path("/profile")
+public class ProfileResource {
+	...
+}
+```
+
 
 ## PathParam
 * this would be used to read url path parameters. Example. in case of 'webapi\profiles\1'.  Here 1 is path param and would be used to get profile which matches to id 1.
 * `@Path` value needs to be set as `@Path('{profileId}')` where 'profileId' would be our path param place holder and would be received at method arguments by using `@PathParam('profileId') <data type> <variable>`
   * we need to use same for `PathParam` which is used at `@Path`
+  
+```java
+@Path("/{profileId}")
+public Profile getProfile(@PathParam("profileId") String profileId) {
+	...
+}
+```
+  
+## QueryParam
+* Query Parameters are **case sensitive**
+* this would be used to read url query parameters.  Example. in case of 'webapi\profiles?filterByUsername=bhupal', this would return all profiles which are matched to bhupal
+* `@QueryParam("byUsername") String byUsername` would be used to read `byUsername` query parameter 
+
+```java
+public List<Profile> getProfiles(@QueryParam("byUsername") String byUsername) {
+	...
+}
+```
 
 ### Http Get Implementation - Get Data
 * Http Request should be having method type as GET
@@ -17,6 +59,14 @@ Create a class and annotate with `@Path('<path>')`
   * MediaType.APPLICATION_XML
   * MediaType.TEXT_PLAIN
 
+```java
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+@Path("/{profileId}")
+public Profile getProfile(@PathParam("profileId") String profileId) {
+	...
+}
+```
 
 ### Http Post Implementation - Add New Data
 * Http Request should be having method type as POST
@@ -24,12 +74,29 @@ Create a class and annotate with `@Path('<path>')`
 * Resource method would be annotated with `@POST` or `@POST("<path>")` and would be received as simple text at method arguments
   * to receive in the form of object, use `@Consumes(MediaType.XXXXXXXXXX)` to consume the data and for method arguments use the object which is required (which is resource data object)
 
+```java
+@POST
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public Profile addProfile(Profile profileObj) {
+	...
+}
+```
+  
 ### Http Put Implementation - Update Data
 * Http Request should be having method type as UPDATE
 * this would be used to update data
 * Resource method would be annotated with `@UPDATE` or `@UPDATE("<path>")` 
   * to receive in the form of object, use `@Consumes(MediaType.XXXXXXXXXX)` to consume the data and for method arguments use the object which is required (which is resource data object)
 
+```java
+@PUT
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public Profile updateProfile(Profile profileObj) {
+	...
+}
+```
 
 ### Http Delete Implementation - Delete Data
 * Http Request should be having method type as DELETE
@@ -38,14 +105,14 @@ Create a class and annotate with `@Path('<path>')`
   * Use `PathParam` to get Id
   * Use `@Consumes(MediaType.XXXXXXXXXX)` to consume the data and for method arguments use the object which is required (which is resource data object)
 
-
-## Resource Data Object 
-* Create a POJO and annotate with `@XmlRootElement`.  Whenever resource method returns this object and as per `Produces` and annotation arguments, either XML or JSON would be created.
-* Must be implemented **public no argument constuctor** else conversion would fail
-
-
-
-
+```java
+@DELETE
+@Path("/{profileId}")
+@Produces(MediaType.APPLICATION_JSON)
+public Profile updateProfile(@PathParam("profileId") String profileId) {
+	...
+}
+```
 
 
 ## References
