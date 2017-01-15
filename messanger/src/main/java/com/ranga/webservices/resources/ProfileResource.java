@@ -113,4 +113,10 @@ public class ProfileResource {
 
 		return "check logs";
 	}
+
+	@Path("/{profileId}/messages")
+	public MessagesResource getMessages(@PathParam("profileId") String profileId) {
+		System.out.println("profile resource + id = " + profileId);
+		return new MessagesResource();
+	}
 }

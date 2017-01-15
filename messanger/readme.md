@@ -229,6 +229,40 @@ public Profile updateProfile(@PathParam("profileId") String profileId) {
 }
 ```
 
+## Sub Resource
+
+### Get Messages
+* For Example. url is 'http://localhost:8080/messanger/webapi/profile/1/messages/'
+
+* `profile` resource creation
+  * Dont use Http Method declarations
+  * No Need of `@Produces` as sub resource would return
+* Sub Resource has all features like main resource, which means
+  * GET, POST, UPDATE, DELETE and all
+  * all kind of Parameters can be used
+  
+```java
+@Path("/profile")
+public class ProfileResource {
+	@Path("/{profileId}/messages")
+	public MessagesResource getMessages(@PathParam("profileId") String profileId) {
+		...
+		
+		return new MessagesResource();
+	}
+}
+```
+```java
+@Path("/")
+public class MessagesResource {
+	 @GET
+	 @Produces(MediaType.APPLICATION_JSON)
+	 public List<Message> getMessages(@PathParam("profileId") String profileId) {
+		...
+	 }
+}
+```
+
 
 ## References
 * [Youtube Videos] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)
