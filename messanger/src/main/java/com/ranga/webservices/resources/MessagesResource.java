@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import com.ranga.webservices.resources.data.Message;
 
 @Path("/messages")
-public class Messages {
+public class MessagesResource {
 	static List<Message> list = new ArrayList<Message>();
 
 	static{
