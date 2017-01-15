@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Profile {
-	int id;
+	int id = -1;
 	String username;
 	String fullName;
 

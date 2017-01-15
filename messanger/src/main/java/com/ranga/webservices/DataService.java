@@ -37,4 +37,16 @@ public class DataService {
 
 		return null;
 	}
+	
+	public Profile addProfile(Profile p) {
+		List<Profile> list = getProfiles();
+		if (p.getId() == -1 || p.getId() == 0) {
+			int id = list.size() + 1;
+			p.setId(id);
+		}
+		
+		list.add(p);
+		
+		return p;
+	}
 }
