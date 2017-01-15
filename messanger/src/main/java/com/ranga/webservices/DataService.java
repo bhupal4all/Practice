@@ -38,15 +38,44 @@ public class DataService {
 		return null;
 	}
 	
-	public Profile addProfile(Profile p) {
+	public Profile addProfile(Profile pprofileObj) {
 		List<Profile> list = getProfiles();
-		if (p.getId() == -1 || p.getId() == 0) {
+		if (pprofileObj.getId() == -1 || pprofileObj.getId() == 0) {
 			int id = list.size() + 1;
-			p.setId(id);
+			pprofileObj.setId(id);
 		}
 		
-		list.add(p);
+		list.add(pprofileObj);
 		
-		return p;
+		return pprofileObj;
 	}
+
+	public Profile updateProfile(Profile profileObj) {
+		Profile lprofile = getProfileById(String.valueOf(profileObj.getId()));
+		
+		if (profileObj.getFullName() != null && !profileObj.getFullName().isEmpty()) {
+			lprofile.setFullName(profileObj.getFullName());
+		}
+		
+		if (profileObj.getUsername() != null && !profileObj.getUsername().isEmpty()) {
+			lprofile.setUsername(profileObj.getUsername());
+		}
+		
+		return profileObj;
+	}
+	
+	public Profile deleteProfileById(String id) {
+		List<Profile> list = getProfiles();
+		Profile profile = null;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getId() == Integer.parseInt(id)) {
+				profile = list.remove(i);
+				break;
+			}
+		}
+
+		return profile;
+	}
+
+	
 }
