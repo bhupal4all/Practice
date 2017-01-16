@@ -611,6 +611,52 @@ public class DateMessageBodyWriter implements MessageBodyWriter<Date> {
 }
 ```
 
+### Message Body Reader
+* Message Body Reader can be implemented similar to Message Body Writer
+
+```java
+@Provider
+@Consumes(MediaType.TEXT_PLAIN)
+public class DateMessageBodyReader implements MessageBodyReader<Date> {
+	@Override
+	public boolean isReadable(Class<?> type, Type arg1, Annotation[] arg2,
+			MediaType arg3) {
+		return Date.class.isAssignableFrom(type);
+	}
+
+	@Override
+	public Date readFrom(Class<Date> aClass, Type arg1, Annotation[] arg2,
+			MediaType arg3, MultivaluedMap<String, String> arg4, InputStream in)
+			throws IOException, WebApplicationException {
+
+		StringBuilder dateStr = new StringBuilder();
+		int i;
+		char c;
+		while ((i = in.read()) != -1) {
+			c = (char) i;
+			dateStr.append(c);
+		}
+		System.out.println(dateStr);
+
+		return Calendar.getInstance().getTime();
+	}
+}
+```
+
+```java
+@Path("/test")
+public class MyResource {	
+    @POST
+    @Path("/date")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.TEXT_PLAIN)
+    public String readDate(Date date) {
+    	System.out.println("got = "+date);
+    	return "I got date";
+    }
+}
+```
+
 ## References
-* [ Developing RESTful APIs with JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)
+* [Developing RESTful APIs with JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)
 * [Advanced JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTY40IcG584ynNqibMc1heIa)
