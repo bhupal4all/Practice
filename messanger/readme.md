@@ -556,6 +556,8 @@ public class MyDate {
 * along with http request or response, message body would be sent along with data
 * Message Body is different when compared with Parameters
 * To read message body, we need message readers and writers
+
+### Message Body Writer
 * Example. while using POST or PUT url, you might be sending some data along with path
   * url path has path parameters
   * json data which is nothing but message body, generally post json data is message body
