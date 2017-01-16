@@ -163,6 +163,14 @@ public class Profile {
 ```
 
 ## Resource Creation
+* Resources would be **re-created** whenever there is a request, which means one request one new resource object
+  * which means, if we want to know how many times that resource had been accessed
+  * Simple private counter wouldnt help, as resource object would be created everytime
+* How do we solve this?
+  * By using `@Singleton` annotation at class declaration 
+  * Resource would be singleton and **only one object would get created** and would be reused on every request
+  * **There is catch here**, as resource become singleton, we need to be very careful while declaring private memeber variables
+
 
 ### Http Get Implementation - Get Data
 * Http Request should be having method type as GET
@@ -541,6 +549,63 @@ public class MyDate {
 	int month;
 	int day;
 	...
+}
+```
+
+## Message Body
+* along with http request or response, message body would be sent along with data
+* Message Body is different when compared with Parameters
+* To read message body, we need message readers and writers
+* Example. while using POST or PUT url, you might be sending some data along with path
+  * url path has path parameters
+  * json data which is nothing but message body, generally post json data is message body
+  
+* Example. if you want to implement a rest api for returning date in plan text like below,   would result an error at server.  which is nothing but `MessageBodyWriter` not found for `java.util.Date`.
+```java
+@Path("/test")
+public class MyResource {	
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public Date getDate() {
+		return Calendar.getInstance().getTime();
+	}
+}
+```
+### How do we solve?
+By writing a custom `MessageBodyWriter` to convert `java.util.Date` to String (in our case)
+
+* Create a class which implments `MessageBodyWriter<T>` and instead of Generic type use `java.util.Date`
+* implment all necessary methods
+  * `getSize` method id deprecated, so just return -1
+  * `isWriteable` method is responsible to let the Jersy know whether this class/provider can be used for Message body writer
+  * `writeTo` method is responsible for message body writing
+    * convert the data object from argument one which Date object
+	* add the ouptput to `OutputStream` in the form of bytes
+* Message body writers are different for differnt message types
+  * in our case, we are writing MessageBodyWriter for text
+  * add `@Produces(MediaType.TEXT_PLAIN)` to handler only text
+	
+```java
+@Provider
+@Produces(MediaType.TEXT_PLAIN)
+public class DateMessageBodyWriter implements MessageBodyWriter<Date> {
+	@Override
+	public long getSize(Date arg0, Class<?> arg1, Type arg2, Annotation[] arg3, MediaType arg4) {
+		// Deprecated
+		return -1;
+	}
+
+	@Override
+	public boolean isWriteable(Class<?> type, Type arg1, Annotation[] arg2, MediaType arg3) {
+		return Date.class.isAssignableFrom(type);
+	}
+
+	@Override
+	public void writeTo(Date date, Class<?> type, Type type1, Annotation[] anntns, MediaType mt, MultivaluedMap<String, Object> mm, OutputStream out) 
+		throws IOException, WebApplicationException
+	{
+		out.write(date.toString().getBytes());
+	}
 }
 ```
 

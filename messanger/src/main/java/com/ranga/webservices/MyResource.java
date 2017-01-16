@@ -1,5 +1,8 @@
 package com.ranga.webservices;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -21,5 +24,12 @@ public class MyResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String getIt() {
         return "Got it!";
+    }
+    
+    @GET
+    @Path("/date")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Date getDate() {
+    	return Calendar.getInstance().getTime();
     }
 }
