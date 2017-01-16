@@ -468,5 +468,82 @@ public class ProfileResource {
 }
 ```
 
+## Convertors
+* In case of simple date and which is keep on changing everyday
+* How do we covert 'today' to date?
+  * We can acheive this by using custom convertors
+  * Jersy would check all providers to resolve the convertor  
+  * Read as normal PathParam with custom resource data
+  
+### ParamConvertorProvider
+* create a class by extending `ParamConvertorProvider` interface
+* implement `getConvertor` method
+* Create inline class which extends `ParamConvertor<T>` class and override `fromString` and `toString` methods
+  * inside `fromString` method, create a custom pojo object and set required properties
+  * cast the custom pojo using `Class<T>`
+
+Example: *http://localhost:8080/messanger/webapi/date/today* would result as below
+```json
+{
+  "day": 16,
+  "month": 0,
+  "year": 2017
+}
+```
+  
+```java
+@Provider
+public class MyDateConvertorProvider implements ParamConverterProvider {
+	@Override
+	public <T> ParamConverter<T> getConverter(final Class<T> rawType,
+			Type genericType, Annotation[] annotations) {
+		return new ParamConverter<T>() {
+			@Override
+			public T fromString(String value) {
+				Calendar requestedDate = Calendar.getInstance();
+				if (value.equals("tomorrow")) {
+					requestedDate.add(Calendar.DATE, 1);
+				} else if (value.equals("yesterday")) {
+					requestedDate.add(Calendar.DATE, -1);
+				}
+
+				MyDate date = new MyDate(requestedDate.get(Calendar.YEAR),
+						requestedDate.get(Calendar.MONTH),
+						requestedDate.get(Calendar.DATE));
+
+				return rawType.cast(date);
+			}
+
+			@Override
+			public String toString(T obj) {
+				if (obj != null)
+					return obj.toString();
+				return null;
+			}
+		};
+	}
+}
+```
+```java
+@Path("/date")
+public class DateResource {	
+	@GET
+	@Path("/{dateFilter}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public MyDate getDate(@PathParam("dateFilter") MyDate date) {
+		return date;
+	}
+}
+```
+```java
+public class MyDate {
+	int year;
+	int month;
+	int day;
+	...
+}
+```
+
 ## References
-* [Youtube Videos] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)
+* [ Developing RESTful APIs with JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)
+* [Advanced JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTY40IcG584ynNqibMc1heIa)
