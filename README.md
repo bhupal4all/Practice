@@ -19,4 +19,5 @@ mvn eclpse:eclipse -Dpwtverison=2.0
           </server>
         </servers>
 ```
-*    [tomcat 7] please ensure that tomcat picked Java Higher version else you will get magor.minor expcection [51]
+* [tomcat 7] please ensure that tomcat picked Java Higher version else you will get magor.minor expcection [51]
+* [messanger/readme.md](messanger/readme.md)
