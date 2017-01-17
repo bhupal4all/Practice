@@ -23,6 +23,8 @@
 ## Contents
 1. [Spring Boot Project Creation] (#spring-boot-project-creation)
 2. [Rest API Implementation] (#rest-api-implementation)
+3. [Spring Boot Configuration] (#spring-boot-configuration)
+
 
 ---
 
@@ -175,7 +177,19 @@ public class TopicsRestController {
 	}
 ```
 
+[Contents] (#contents)
 
+
+## Spring Boot Configuration
+* Spring Boot takes [default configuration] (https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html) and runs on it
+* If we want to change any configuration, then we need to define the configuration at either `application.properties` or `application.yml` for same property
+
+> __Note:__ application.properties/yml should be available at classpath
+
+* For Example, if we want to change web server port
+  * override default configuration with `server.port` in `application.properties`
+  * in our case, application.properties is located at `src\main\resources\application.properties`
+  * this file would come along with basic setup with empty file
 
 [Contents] (#contents)
 
