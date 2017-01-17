@@ -8,10 +8,12 @@ Learning Restful API
 3. JSON/XML
 
 ### Tools
-1. Eclipse
-2. Maven - Jersey, Jetty or Tomcat
-3. Google Chrome or any advanced Browser
-4. Postman or any other tool
+1. JDK 1.7
+2. Eclipse
+3. Maven - Jersey, Jetty or Tomcat
+4. Google Chrome or any advanced Browser
+5. Postman or any other tool
+
 
 ## Contents
 1. [URL Path Creation] (#url-path-creation)
