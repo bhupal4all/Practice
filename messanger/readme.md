@@ -1,6 +1,18 @@
 # Learning Rest API
 Learning Restful API
 
+## Prerequisite
+### Rest API
+1. Basic knowledge on Web Server setup
+2. Basic knowledge on Request/Response of Web server
+3. JSON/XML
+
+### Tools
+1. Eclipse
+2. Maven - Jersey, Jetty or Tomcat
+3. Google Chrome or any advanced Browser
+4. Postman or any other tool
+
 ## Contents
 1. [URL Path Creation] (#url-path-creation)
 2. [Parameters] (#parameters)
@@ -828,6 +840,6 @@ public class MyResource {
 ## References
 * [Developing RESTful APIs with JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)
 * [Advanced JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTY40IcG584ynNqibMc1heIa)
-* [Jersey User Guide] (https://jersey.java.net/documentation/latest/index.html))
+* [Jersey User Guide] (https://jersey.java.net/documentation/latest/index.html)
 
 [Contents] (#contents)
