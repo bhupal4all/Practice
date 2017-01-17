@@ -19,6 +19,8 @@
 5. Postman or any other tool
 
 ## Contents
+1. [Spring Boot Project Creation] (#spring-boot-project-creation)
+2. [Rest API Implementation] (#rest-api-implementation)
 
 ---
 
@@ -48,12 +50,43 @@ __Spring Boot Project has been created__
 After running below command, Maven would take some time to download dependencies (this would happen only once and triggers if any new dependencies are included).
 After build, compile and testing; application starts.
 
-```
+```sh
 mvn clean compile package spring-boot:run
 ```
 
-Type http://localhost:8080 to check the application, you would be getting a default error page which is 404-NotFound as we dont have any page to render
-  
+Type [http://localhost:8080] (http://localhost:8080) to check the application, you would be getting a default error page which is 404-NotFound as we dont have any page to render
+
+### Eclipse Project creation
+We are going to create eclipse project using Maven eclipse plugin
+* We are going to pass `pwtversion` to create Web Eclipse Project
+* Eclipse project creation would be created by assuming M2_REPO variable is configured, else please create M2_REPO user variable with Maven Local Repository Path
+
+```sh
+mvn eclpse:eclipse -Dpwtverison=2.0
+```
+
+## Rest API Implementation
+Now, we are going to implement Rest API
+
+### Simple Rest API - Greeting
+* Create a class and annotate with `@RestController`
+* Create a method which returns String and annotate with `@RequestMapping("<url path>")`
+  * If we have not specified any Request Method, by default it is __Get__
+* Rest Service created.  Yes, It is created.
+* Run maven build and run the application as mentioned at [Running Maven](#running-maven)
+* Access the url [http://localhost:8080/hello] (http://localhost:8080/hello), you would get __Welcome to Rest Services__
+
+```java
+@RestController
+public class GreetingsRestController {
+	@RequestMapping("/hello")
+	public String sayHello() {
+		return "Welcome to Rest Services";
+	}
+}
+```
+
+
 ---
 # References
 * [Spring Boot Videos] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTbx8p2oCgcAQGQyqN8XeA1x)

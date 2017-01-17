@@ -11,6 +11,11 @@ We are going to implement REST API using Jersy
 mvn eclpse:eclipse -Dpwtverison=2.0
 ```
 
+* If you are getting any build error, please check Eclispe - Java Build Path
+  * If you are getting error at M2_REPO user variable, please configure.
+  * If Maven Local Repository path is configured wrongly, please configure correct path.
+  * If eclipse not letting you to chagne M2_REPO variable, then configure __Eclipse -> Preferences -> Maven -> User Settings__ with __<MavenInstallPath>\conf\settings.xml__ whcih would help you to resolve build issues
+
 >  __Note__ - this is for Java Version 1.7
 
 ### apache tomcat server configuration for Maven
