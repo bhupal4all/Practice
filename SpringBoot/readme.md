@@ -10,6 +10,7 @@
 2. Basic knowledge on Request/Response of Web server
 3. JSON/XML
 4. Spring Core
+5. RESTful API
 
 ### Tools
 1. JDK 1.7
@@ -56,6 +57,8 @@ mvn clean compile package spring-boot:run
 
 Type [http://localhost:8080] (http://localhost:8080) to check the application, you would be getting a default error page which is 404-NotFound as we dont have any page to render
 
+[Contents] (#contents)
+
 ### Eclipse Project creation
 We are going to create eclipse project using Maven eclipse plugin
 * We are going to pass `pwtversion` to create Web Eclipse Project
@@ -86,7 +89,44 @@ public class GreetingsRestController {
 }
 ```
 
+### Spring MVC Service
+* Lets create a server to handle Topics
+* Create a class and annotate with `@Service`; Spring would consider this class as service and this service object is ready
+* In our example, we are maintaining a temporaray list of topics which would replaced with database data
+* Now, we can inject this service object whereever we need with the help of __Auto Wiring__
+
+```java
+@Service
+public class TopicService {
+	private List<Topic> topicList = Arrays.asList(new Topic("spring", "Spring Framework", "Spring Framework Description"),
+			new Topic("hibernate", "Hibernate Framework", "Hibernate Framework Description"));
+	
+	public List<Topic> getAllTopics() {
+		return topicList;
+	}
+}
+```
+
+### Returning JSON Objects
+* Simply return POJO object from Rest Method, automatically object would be converted to JSON
+
+```java
+@RestController
+public class TopicsRestController {
+	@Autowired
+	TopicService topicService;
+	
+	@RequestMapping("/topics")
+	public List<Topic> getTopics() {
+		return topicService.getAllTopics();
+	}
+}
+```
+
+[Contents] (#contents)
 
 ---
 # References
 * [Spring Boot Videos] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTbx8p2oCgcAQGQyqN8XeA1x)
+
+[Contents] (#contents)
