@@ -43,4 +43,11 @@ public class MyResource {
     	System.out.println("got = "+date);
     	return "I got date";
     }
+    
+	@GET
+	@Path("/shortdate")
+	@Produces("text/shortdate")
+	public Date getShortDate() {
+		return Calendar.getInstance().getTime();
+	}
 }

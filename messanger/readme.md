@@ -657,6 +657,56 @@ public class MyResource {
 }
 ```
 
+## Custom Media Type
+* In case of Media Type and it is not suitable for our need, then we can write our own media type
+* Example. We a date in short date format from server.  One way is use a new rest api to get it, another way is use the same URL with differnt media type (of course, rest server should have implementeed for custom media type)
+
+Let's see the implmentation
+* Create a rest api to accpet custom media type like `Content-Type=text/shortdate`
+
+```java
+@Path("/test")
+public class MyResource {	
+	@GET
+	@Path("/shortdate")
+	@Produces("text/shortdate")
+	public Date getShortDate() {
+		return Calendar.getInstance().getTime();
+	}
+}
+```
+* and we requrest a http get, then we would get below error
+
+>_SEVERE: MessageBodyWriter not found for media type=text/shortdate, type=class java.util.Date, genericType=class java.util.Date._
+
+* How do we solve this? 
+  * By implementating a `MessageBodyWriter`
+
+	```java
+	@Provider
+	@Produces("text/shortdate")
+	public class ShortDateMessageBodyWriter implements MessageBodyWriter<Date> {
+		@Override
+		public long getSize(Date arg0, Class<?> arg1, Type arg2, Annotation[] arg3, MediaType arg4) {
+			// Deprecated
+			return -1;
+		}
+
+		@Override
+		public boolean isWriteable(Class<?> type, Type arg1, Annotation[] arg2, MediaType arg3) {
+			return Date.class.isAssignableFrom(type);
+		}
+
+		@Override
+		public void writeTo(Date date, Class<?> type, Type type1, Annotation[] anntns, MediaType mt, MultivaluedMap<String, Object> mm, OutputStream out) 
+			throws IOException, WebApplicationException
+		{
+			String dateFormat = date.getDate() + "-" + date.getMonth() + "-" + date.getYear();
+			out.write(dateFormat.getBytes());
+		}
+	}
+	```
+
 ## References
 * [Developing RESTful APIs with JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)
 * [Advanced JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTY40IcG584ynNqibMc1heIa)
