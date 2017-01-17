@@ -15,4 +15,14 @@ public class TopicService {
 	public List<Topic> getAllTopics() {
 		return topicList;
 	}
+	
+	public Topic getTopicById(String id) {
+		for(int idx=0;idx<topicList.size();idx++) {
+			if (topicList.get(idx).getId().compareTo(id) == 0) {
+				return topicList.get(idx);
+			}
+		}
+		
+		return null;
+	}
 }

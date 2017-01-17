@@ -11,6 +11,7 @@
 3. JSON/XML
 4. Spring Core
 5. RESTful API
+6. Spring MVC (Optional)
 
 ### Tools
 1. JDK 1.7
@@ -119,6 +120,22 @@ public class TopicsRestController {
 	@RequestMapping("/topics")
 	public List<Topic> getTopics() {
 		return topicService.getAllTopics();
+	}
+}
+```
+
+### Path Variable
+* In case of filter, we can use `PathVariable` to get filter value and can be used to get the required object
+
+```java
+@RestController
+public class TopicsRestController {
+	@Autowired
+	TopicService topicService;
+
+	@RequestMapping("/topics/{topicId}")
+	public Topic getTopicById(@PathVariable("topicId") String topicId) {
+		return topicService.getTopicById(topicId);
 	}
 }
 ```
