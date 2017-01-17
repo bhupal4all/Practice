@@ -1,5 +1,6 @@
 # List of Applications
 * [messanger/readme.md] (JersyRest/readme.md)
+* [sb-practice/readme.md] (SpringBoot/readme.md)
 
 ## messanger/Rest API
 We are going to implement REST API using Jersy
@@ -25,6 +26,10 @@ we need to configure the server on 'apache-maven-3.1.1\conf\settings.xml'.  user
 ```
 
 > __tomcat 7__ : please ensure that tomcat picked Java Higher version else you will get magor.minor expcection [51]
+
+## sb-practice/Spring Boot
+We are going to learn spring boot.
+
 
 # References
 * Koushik course - walkthrough
