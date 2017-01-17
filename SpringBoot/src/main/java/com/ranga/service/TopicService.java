@@ -19,9 +19,9 @@ public class TopicService {
 		return topicList;
 	}
 
-	public Topic getTopicById(String id) {
+	public Topic getTopicById(String topicId) {
 		for (int idx = 0; idx < topicList.size(); idx++) {
-			if (topicList.get(idx).getId().compareTo(id) == 0) {
+			if (topicList.get(idx).getId().compareTo(topicId) == 0) {
 				return topicList.get(idx);
 			}
 		}
@@ -31,5 +31,16 @@ public class TopicService {
 
 	public boolean addTopic(Topic topic) {
 		return topicList.add(topic);
+	}
+	
+	public boolean updateTopic(Topic topic, String topicId) {
+		for (int idx = 0; idx < topicList.size(); idx++) {
+			if (topicList.get(idx).getId().compareTo(topicId) == 0) {
+				topicList.set(idx, topic);
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

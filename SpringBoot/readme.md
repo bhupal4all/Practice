@@ -155,6 +155,14 @@ public class TopicsRestController {
 	}
 ```
 
+* In case of udpate, we use the same way as adding a new object
+
+```java
+	@RequestMapping(method=RequestMethod.PUT, value = "/topics/{topicId}")
+	public void updateTopic(@RequestBody Topic topic, @PathVariable("topicId")String topicId) {
+		topicService.updateTopic(topic, topicId);
+	}
+```
 
 [Contents] (#contents)
 

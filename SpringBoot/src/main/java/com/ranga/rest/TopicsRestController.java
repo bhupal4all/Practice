@@ -32,4 +32,9 @@ public class TopicsRestController {
 	public void addTopic(@RequestBody Topic topic) {
 		topicService.addTopic(topic);
 	}
+	
+	@RequestMapping(method=RequestMethod.PUT, value = "/topics/{topicId}")
+	public void updateTopic(@RequestBody Topic topic, @PathVariable("topicId")String topicId) {
+		topicService.updateTopic(topic, topicId);
+	}
 }
