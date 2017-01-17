@@ -25,6 +25,7 @@
 2. [Rest API Implementation] (#rest-api-implementation)
 3. [Spring Boot Configuration] (#spring-boot-configuration)
 4. [Spring JPA] (#spring-jpa)
+5. [Spring Boot Actuator] (#spring-boot-actuator)
 
 ---
 
@@ -221,11 +222,38 @@ Lets work on database layer to persist the values, in our case Topics
   4 count()
   5 delete(T)
   6 deleteAll
+  
+* You can extend the application by implementing all database complex operations using Spring Data
+
+[Contents] (#contents)
+
+
+## Spring Boot Actuators
+> __Definition of Actuator__: An actuator is a manufacturing term, referring to a mechanical device for moving or controlling something. Actuators can generate a large amount of motion from a small change.
+
+* Actuator endpoints allow you to monitor and interact with your application. 
+* Spring Boot includes a number of built-in endpoints and you can also add your own.
+* For example the `health` endpoint provides basic application health information.
+  * add below dependency at `pom.xml` under `dependencies` tag to add `health` actuator
+  * try to access [http://localhost:8081/health] (http://localhost:8081/health)
+  * you can try `trace`, `metrics`, `beans` and whole alot
+  
+```xml
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+```
+
+
 
 [Contents] (#contents)
 
 ---
 # References
 * [Spring Boot Videos] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTbx8p2oCgcAQGQyqN8XeA1x)
-
+* [Spring Health Actuator] (http://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-enabling.html)
+  * [Spring Health Actuator Details] (http://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-endpoints.html)
+  
+  
 [Contents] (#contents)
