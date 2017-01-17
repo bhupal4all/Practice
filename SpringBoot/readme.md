@@ -109,6 +109,7 @@ public class TopicService {
 ```
 
 ### Returning JSON Objects
+* Http Method is __GET__
 * Simply return POJO object from Rest Method, automatically object would be converted to JSON
 
 ```java
@@ -125,6 +126,7 @@ public class TopicsRestController {
 ```
 
 ### Path Variable
+* Http Method is __GET__
 * In case of filter, we can use `PathVariable` to get filter value and can be used to get the required object
 
 ```java
@@ -139,6 +141,20 @@ public class TopicsRestController {
 	}
 }
 ```
+
+### Request Body
+* Http Method is __POST__
+* In case of adding a new object or POST method implementation
+  * need to add `RequestMethod` to `RequestMapping` along with path
+  * `RequestBody` would read the json from Http Post Request and sets on topic object
+
+```java
+  	@RequestMapping(method=RequestMethod.POST, value = "/topics")
+	public void addTopic(@RequestBody Topic topic) {
+		topicService.addTopic(topic);
+	}
+```
+
 
 [Contents] (#contents)
 
