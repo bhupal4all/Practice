@@ -1,7 +1,8 @@
 # List of Applications
-* [messanger/readme.md](messanger/readme.md)
+* [messanger/readme.md] (JersyRest/readme.md)
 
 ## messanger/Rest API
+We are going to implement REST API using Jersy
 
 *  setting up first rest api web application using 'org.glassfish.jersey.archetypes:jersey-quickstart-webapp'
 ### How to generate eclipse web project using maven
