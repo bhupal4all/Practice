@@ -1,6 +1,11 @@
 package com.ranga.rest.data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Topic {
+	@Id
 	String id;
 	String name;
 	String description;

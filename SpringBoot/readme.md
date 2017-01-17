@@ -24,7 +24,7 @@
 1. [Spring Boot Project Creation] (#spring-boot-project-creation)
 2. [Rest API Implementation] (#rest-api-implementation)
 3. [Spring Boot Configuration] (#spring-boot-configuration)
-
+4. [Spring JPA] (#spring-jpa)
 
 ---
 
@@ -190,6 +190,37 @@ public class TopicsRestController {
   * override default configuration with `server.port` in `application.properties`
   * in our case, application.properties is located at `src\main\resources\application.properties`
   * this file would come along with basic setup with empty file
+
+[Contents] (#contents)
+
+
+## Spring JPA
+Lets work on database layer to persist the values, in our case Topics
+
+* We are going to use __Spring JPA__
+* We have already included __Spring JPA__ while creating the project 
+* Our project came along with __Sring JPA__, __Spring ORM__ and __Hibernate__, please check the `pom.xml` and libraries
+
+* We are going to use __Apache Derby__ for database
+* __Apache Derby__ is embeded database which means live database (data would available only when application is running, later wipes out the database)
+
+### Database Entity
+* Now, we are going to create database entity.  In our case we are going to covert Topic class to database entity
+* Modify Topic class by adding annotation `Entity` and `Id` at id property
+
+> JPA `Entity` needs `Id` to be configured
+
+### Data Service
+* Create an Interface which implements `CrudRepository<T, ID>`
+* Our Interface would identified by Spring Boot during component scan and instantiates the interface which would have all database capabilities
+* Regarding this, you can find at `Spring Data`
+* Few Common methods 
+  1 findAll()
+  2 findOne(ID)
+  3 save(T)
+  4 count()
+  5 delete(T)
+  6 deleteAll
 
 [Contents] (#contents)
 

@@ -2,56 +2,52 @@ package com.ranga.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ranga.rest.data.Topic;
+import com.ranga.service.database.TopicRepository;
 
 @Service
 public class TopicService {
-	private List<Topic> topicList = new ArrayList<Topic>(Arrays.asList(
-			new Topic("spring", "Spring Framework",
-					"Spring Framework Description"), new Topic("hibernate",
-					"Hibernate Framework", "Hibernate Framework Description")));
+//	private List<Topic> topicList = new ArrayList<Topic>(Arrays.asList(
+//			new Topic("spring", "Spring Framework",
+//					"Spring Framework Description"), new Topic("hibernate",
+//					"Hibernate Framework", "Hibernate Framework Description")));
 
+	@Autowired
+	TopicRepository topicRepository;
+	
 	public List<Topic> getAllTopics() {
-		return topicList;
+		List<Topic> list = new ArrayList<Topic>();
+		
+		Iterator<Topic> topicItr = topicRepository.findAll().iterator();
+		while(topicItr.hasNext()){
+			list.add(topicItr.next());
+		}
+		
+		return list;
 	}
 
 	public Topic getTopicById(String topicId) {
-		for (int idx = 0; idx < topicList.size(); idx++) {
-			if (topicList.get(idx).getId().compareTo(topicId) == 0) {
-				return topicList.get(idx);
-			}
-		}
-
-		return null;
+		return topicRepository.findOne(topicId);
 	}
 
 	public boolean addTopic(Topic topic) {
-		return topicList.add(topic);
+		topicRepository.save(topic);
+		return true;
 	}
 	
 	public boolean updateTopic(Topic topic, String topicId) {
-		for (int idx = 0; idx < topicList.size(); idx++) {
-			if (topicList.get(idx).getId().compareTo(topicId) == 0) {
-				topicList.set(idx, topic);
-				return true;
-			}
-		}
-		
-		return false;
+		topicRepository.save(topic);
+		return true;
 	}
 	
 	public boolean deleteTopic(String topicId) {
-		for (int idx = 0; idx < topicList.size(); idx++) {
-			if (topicList.get(idx).getId().compareTo(topicId) == 0) {
-				topicList.remove(idx);
-				return true;
-			}
-		}
-		
-		return false;
+		topicRepository.delete(topicId);
+		return true;
 	}
 }

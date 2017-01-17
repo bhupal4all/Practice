@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ranga.rest.data.Topic;
 import com.ranga.service.TopicService;
+import com.ranga.service.database.TopicRepository;
 
 @RestController
 public class TopicsRestController {
