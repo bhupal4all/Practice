@@ -707,6 +707,67 @@ public class MyResource {
 	}
 	```
 
+## Filters
+* Filters can be used when you want to modify any request or response parameters like headers
+* Filters can be implemented at both sides server and client side
+
+| Feature | Client Side | Server Side |
+| --- |:---:| --:|
+| To Modify Reqeust | ClientRequestFilter| ContainerRequestFilter |
+| To Modify Response | ClientResponseFilter | ContainerResponseFilter |
+
+### Server Response Filter
+* Here, we are going to implement server side filter, which is adding `X-Powered-By` to response
+* First, create a provider which is implementing `ContainerResponseFilter`
+```java
+@Provider
+public class XPoweredByServerResponseFilter implements ContainerResponseFilter {
+	@Override
+	public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+		responseContext.getHeaders().add("X-Powered-By", "Bhupal Rest API");
+	}
+}
+```
+* `X-Powered-By` attribute would be __added to each and every response from server__, it could be either success reponse or failure response
+
+### Server Request Filter
+* Here, we are going to implement server side filter, which is checking for request method and request method is post, we are going to check for security
+* First, create a provider which is implementing `ContainerRequestFilter`
+```java
+@Provider
+public class AuthorizationServerRequestFilter implements ContainerRequestFilter {
+	@Override
+	public void filter(ContainerRequestContext requestContext) throws IOException {
+		final SecurityContext securityContext = requestContext.getSecurityContext();
+		if ("POST".equals(requestContext.getMethod())
+				&& (securityContext == null|| !securityContext.isUserInRole("privileged"))) {
+			requestContext.abortWith(Response
+					.status(Response.Status.UNAUTHORIZED)
+					.entity("User cannot access the resource.").build());
+		}
+	}
+}
+```
+
+### Client Request Filter
+* We are going to implement an filter which is checking for `Client-Name` property at header, if proeprty is not defined, decline the request
+* First, Create a provide which is implementing `ClientRequestFilter`
+> _This Request Filter would be called only when we are using any Rest Client to make a call to server_
+```java
+@Provider
+public class ClientNameClientRequestFilter implements ClientRequestFilter {
+	@Override
+	public void filter(ClientRequestContext requestContext) throws IOException {
+		if (requestContext.getHeaders().get("Client-Name").isEmpty()) {
+			requestContext.abortWith(Response.status(Status.BAD_REQUEST).entity("Client-Name header must be defined").build());
+		}
+	}
+}
+```
+
+### Client Response Filter
+* same as [ Client Request Filter ] (#Client Request Filter) 
+	
 ## References
 * [Developing RESTful APIs with JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn)
 * [Advanced JAX-RS] (https://www.youtube.com/playlist?list=PLqq-6Pq4lTTY40IcG584ynNqibMc1heIa)
