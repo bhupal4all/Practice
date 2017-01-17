@@ -155,7 +155,8 @@ public class TopicsRestController {
 	}
 ```
 
-* In case of udpate, we use the same way as adding a new object
+* In case of udpate, we use the same way as adding a new object by passing updated json along id
+* Http Method is __PUT__
 
 ```java
 	@RequestMapping(method=RequestMethod.PUT, value = "/topics/{topicId}")
@@ -163,6 +164,18 @@ public class TopicsRestController {
 		topicService.updateTopic(topic, topicId);
 	}
 ```
+
+* In case of delete, it is same as above
+* Http Method is __DELETE__
+
+```java
+	@RequestMapping(method=RequestMethod.DELETE, value = "/topics/{topicId}")
+	public void remvoeTopic(@PathVariable("topicId")String topicId) {
+		topicService.deleteTopic(topicId);
+	}
+```
+
+
 
 [Contents] (#contents)
 
